@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SleepScheduler</string>
+    <string name="welcome">Welcome to our Sleep Shifting Scheduling Tool</string>
+    <string name="start">Start setting up</string>
+</resources>
