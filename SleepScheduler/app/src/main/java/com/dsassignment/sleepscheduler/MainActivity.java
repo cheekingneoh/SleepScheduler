@@ -4,14 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SimpleExpandableListAdapter;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.Buffer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,18 +42,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        dataStored data=new dataStored();
+        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
         try{
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(getFilesDir()+File.separator+"MyFile.txt")));
-            dataStored data=new dataStored();
-            data.setDate(bufferedReader.readLine());
-            data.setTime(bufferedReader.readLine());
-            data.setDateLeaving(bufferedReader.readLine());
-            data.setAge(Integer.parseInt(bufferedReader.readLine()));
-            data.setDaysInSpace(Integer.parseInt(bufferedReader.readLine()));
-            bufferedReader.close();
-            Log.d("test",data.toString());
-        }catch(IOException e){
-            Log.d("IOException",e.getMessage());
+            BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(new File(getFilesDir()+File.separator+"day.txt")));
+            String DateCurrent=new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+
+            Date current=sdf.parse(DateCurrent);
+            Date initial=sdf.parse(data.getDate());
+            String temp=data.getDate();
+            Log.d("test", Boolean.toString(TextUtils.isEmpty(temp)));
+            Long diff=current.getTime()-initial.getTime();
+            long day= TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            Log.d("test",Long.toString(day));
+            bufferedWriter.write(Long.toString(day));
+            bufferedWriter.close();
+        }catch (IOException e){
+            Log.d("IOException", e.getMessage());
+        }catch (ParseException e){
+            Log.d("ParseException",e.getMessage());
         }
 
     }

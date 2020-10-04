@@ -122,6 +122,7 @@ public class dataEntry extends AppCompatActivity {
         String timeIn=time.getText().toString();
         int ageIn=Integer.parseInt(age.getText().toString());
         String dateLeavingIn=dateLeaving.getText().toString();
+
         Log.d("maybe problem here", Integer.toString(ageIn));
         if(TextUtils.isEmpty(dateIn)){
             date.setError("Required to be filled in");

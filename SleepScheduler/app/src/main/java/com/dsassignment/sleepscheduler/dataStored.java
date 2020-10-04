@@ -1,11 +1,13 @@
 package com.dsassignment.sleepscheduler;
 
+import android.util.Log;
+
 public class dataStored {
-    private String date;
-    private String time;
-    private int age;
-    private String dateLeaving;
-    private int daysInSpace;
+    private static String date;
+    private static String time;
+    private static int age;
+    private static String dateLeaving;
+    private static int daysInSpace;
 
     public dataStored() {
     }
@@ -46,11 +48,12 @@ public class dataStored {
     }
 
     public String getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(String date) {
         this.date = date;
+        Log.d("test here",this.date);
     }
 
     public String getTime() {
