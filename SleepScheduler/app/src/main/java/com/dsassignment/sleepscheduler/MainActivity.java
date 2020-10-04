@@ -37,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
             dataStored data=new dataStored();
             data.setDate(bufferedReader.readLine());
             data.setTime(bufferedReader.readLine());
+            data.setDateLeaving(bufferedReader.readLine());
             data.setAge(Integer.parseInt(bufferedReader.readLine()));
+            data.setDaysInSpace(Integer.parseInt(bufferedReader.readLine()));
             bufferedReader.close();
             Log.d("test",data.toString());
         }catch(IOException e){

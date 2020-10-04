@@ -20,14 +20,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class dataEntry extends AppCompatActivity {
 
     private int mYear, mMonth, mDay, mHour, mMinute;
-    private EditText date,time,age;
+    private EditText date,time,age,dateLeaving;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class dataEntry extends AppCompatActivity {
         date=findViewById(R.id.dateInput);
         time=findViewById(R.id.timeInput);
         age=findViewById(R.id.ageInput);
+        dateLeaving=findViewById(R.id.dateLeavingInput);
 
         date.setShowSoftInputOnFocus(false);
         date.setOnClickListener(new View.OnClickListener() {
@@ -52,9 +55,31 @@ public class dataEntry extends AppCompatActivity {
 
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                date.setText(dayOfMonth + " / " + (monthOfYear + 1) + " / " + year);
+                                date.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                             }
                         }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
+        dateLeaving.setShowSoftInputOnFocus(false);
+        dateLeaving.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get Current Date
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(dataEntry.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        dateLeaving.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
+                }, mYear, mMonth, mDay);
                 datePickerDialog.show();
             }
         });
@@ -76,7 +101,7 @@ public class dataEntry extends AppCompatActivity {
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
 
-                                time.setText(hourOfDay + " : " + minute);
+                                time.setText(hourOfDay + ":" + minute);
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog.show();
@@ -96,6 +121,7 @@ public class dataEntry extends AppCompatActivity {
         String dateIn=date.getText().toString();
         String timeIn=time.getText().toString();
         int ageIn=Integer.parseInt(age.getText().toString());
+        String dateLeavingIn=dateLeaving.getText().toString();
         Log.d("maybe problem here", Integer.toString(ageIn));
         if(TextUtils.isEmpty(dateIn)){
             date.setError("Required to be filled in");
@@ -106,24 +132,41 @@ public class dataEntry extends AppCompatActivity {
         }else if(TextUtils.isEmpty(Integer.toString(ageIn))){
             age.setError("Required to be filled in");
             age.requestFocus();
-        }else{
+        }else if(TextUtils.isEmpty(dateLeavingIn)) {
+            dateLeaving.setError("Required to be filled in");
+            dateLeaving.requestFocus();
+        }else {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            long days=0;
             try{
+                Date begin=sdf.parse(dateIn);
+                Date end=sdf.parse(dateLeavingIn);
+                Long diff=end.getTime()-begin.getTime();
+                days=TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
                 BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(getFilesDir()+File.separator+"MyFile.txt")));
                 bufferedWriter.write(dateIn);
                 bufferedWriter.newLine();
                 bufferedWriter.write(timeIn);
                 bufferedWriter.newLine();
+                bufferedWriter.write(dateLeavingIn);
+                bufferedWriter.newLine();
                 bufferedWriter.write(Integer.toString(ageIn));
                 bufferedWriter.newLine();
+                bufferedWriter.write(Long.toString(days));
                 bufferedWriter.close();
             }catch(IOException e){
                 Log.d("IOEException",e.getMessage());
+            }catch (ParseException e){
+                Log.d("ParseException",e.getMessage());
             }
 
             dataStored data=new dataStored();
             data.setAge(ageIn);
             data.setDate(dateIn);
+            data.setDateLeaving(dateLeavingIn);
             data.setTime(timeIn);
+            data.setDaysInSpace(Integer.parseInt(Long.toString(days)));
 
             Intent mainPage=new Intent(dataEntry.this,MainActivity.class);
             startActivity(mainPage);
