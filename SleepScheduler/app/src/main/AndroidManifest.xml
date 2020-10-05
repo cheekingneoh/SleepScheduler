@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".earthMainActivity"></activity>
+        <activity android:name=".NightSong"></activity>
+        <activity android:name=".earthMainActivity" />
         <activity android:name=".earthDataEntry" />
         <activity android:name=".earthSetUp" />
         <activity android:name=".startingPage">

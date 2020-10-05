@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SleepScheduler.iml" filepath="$PROJECT_DIR$/.idea/modules/SleepScheduler.iml" group="SleepScheduler" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="SleepScheduler/app" />
     </modules>
   </component>
 </project>
