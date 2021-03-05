@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 public class earthDataEntry extends AppCompatActivity {
-private EditText date,time,age;
+private EditText date,time,age,sleepTime;
 private Spinner countryFrom,countryTo;
 private Button submitButton;
 private int mYear, mMonth, mDay, mHour, mMinute;
@@ -41,6 +41,7 @@ private int mYear, mMonth, mDay, mHour, mMinute;
         countryFrom=findViewById(R.id.countryFrom);
         countryTo=findViewById(R.id.countryTo);
         submitButton=findViewById(R.id.earthSubmitButton);
+        sleepTime=findViewById(R.id.sleepTime);
 
 
         date.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +79,26 @@ private int mYear, mMonth, mDay, mHour, mMinute;
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 time.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+        });
+
+        sleepTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get Current Time
+                final Calendar c = Calendar.getInstance();
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(earthDataEntry.this,
+                        new TimePickerDialog.OnTimeSetListener(){
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                sleepTime.setText(hourOfDay + ":" + minute);
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog.show();
@@ -140,16 +161,4 @@ private int mYear, mMonth, mDay, mHour, mMinute;
         }
     }
 
-//    private AdapterView.OnItemSelectedListener OnCatSpinnerCL = new AdapterView.OnItemSelectedListener() {
-//        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-//
-//            ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
-//            ((TextView) parent.getChildAt(0)).setTextSize(5);
-//
-//        }
-//
-//        public void onNothingSelected(AdapterView<?> parent) {
-//
-//        }
-//    };
 }
